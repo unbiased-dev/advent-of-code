@@ -84,6 +84,28 @@ const part2 = () => {
   console.log(total);
 };
 
+const part2butBetter = () => {
+  // parse input
+  const matches = input
+    .trim()
+    .replaceAll("\n", "")
+    .matchAll(/mul\((\d{1,3},\d{1,3})\)|don't\(\)|do\(\)/g);
+
+  let go = true;
+  let total = 0;
+  matches.forEach((match) => {
+    if (match[0] === "don't()") go = false;
+    if (match[0] === "do()") go = true;
+    if (match[0].startsWith("mul(") && go === true) {
+      const [a, b] = match[1].split(",").map(Number);
+      total += a * b;
+    }
+  });
+
+  console.log(total);
+};
+
 // run
 // part1();
 // part2();
+// part2butBetter();
