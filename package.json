@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "day1": "bun run day1/index.ts",
-    "day2": "bun run day2/index.ts"
+    "day2": "bun run day2/index.ts",
+    "day3": "bun run day3/index.ts"
   },
   "devDependencies": {
     "@types/bun": "latest"
