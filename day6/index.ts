@@ -63,9 +63,13 @@ const part1 = () => {
 const checkIfCanGetOut = (
   map: string[],
   startPosition: [number, number]
-): boolean => {
+): [boolean, Set<string>] => {
   // this keeps track of us hitting walls, in x-y-orientation format
   const tiles = new Map<string, number>();
+  // this keeps track of regular paths we have taken
+  const paths = new Set<string>();
+  // immediately add the start position to the paths set
+  paths.add(`${startPosition[0]}-${startPosition[1]}`);
   // current position
   let position = [...startPosition] as [number, number];
   // current orientation
@@ -123,13 +127,15 @@ const checkIfCanGetOut = (
       isOutOfBounds = true;
       continue;
     }
-    // if it's not a wall or out of bounds do nothing
+    // if it's not a wall or out of bounds just add it to the paths set
+    paths.add(`${position[0]}-${position[1]}`);
   }
 
-  return isOutOfBounds;
+  return [isOutOfBounds, paths];
 };
 
 const part2 = () => {
+  console.time("part2");
   const map = input.trim().split("\n");
   let startPosition: [number, number] = [0, 0];
   let counter = 0;
@@ -140,28 +146,27 @@ const part2 = () => {
       startPosition = [index, guard];
     }
   });
-  for (let i = 0; i < map.length; i++) {
-    const line = map[i];
-    for (let j = 0; j < line.length; j++) {
-      const mapCopy = [...map];
-      const tmp = mapCopy[i][j];
-      // if already a wall ignore
-      if (tmp === "#") continue;
-      // if guard is there, ignore
-      if (tmp === "^") continue;
-      // put a test wall
-      mapCopy[i] =
-        mapCopy[i].substring(0, j) + "#" + mapCopy[i].substring(j + 1);
-      // attempt to get out of maze
-      const gotOut = checkIfCanGetOut(mapCopy, startPosition);
-      // if got out, ignore run
-      if (gotOut) continue;
-      // else, counter go up
-      counter += 1;
-    }
-  }
+  // do a dry run to get the basic paths
+  const [, paths] = checkIfCanGetOut(map, startPosition);
+  // based on the paths, do a loop and add walls
+  // and check if we can get out
+  Array.from(paths).forEach((path) => {
+    const mapCopy = [...map];
+    const [x, y] = path.split("-").map((n) => parseInt(n));
+    // if we are at the start position, don't add a wall on top of the guard
+    if (x === startPosition[0] && y === startPosition[1]) return;
+    // put a test wall
+    mapCopy[x] = mapCopy[x].substring(0, y) + "#" + mapCopy[x].substring(y + 1);
+    // attempt to get out of maze
+    const [gotOut] = checkIfCanGetOut(mapCopy, startPosition);
+    // if got out, ignore run
+    if (gotOut) return;
+    // else, counter go up
+    counter += 1;
+  });
+  console.timeEnd("part2");
   console.log(counter);
 };
 
 // part1();
-// part2();
+part2();
