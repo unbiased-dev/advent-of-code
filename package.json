@@ -7,7 +7,8 @@
     "day2": "bun run day2/index.ts",
     "day3": "bun run day3/index.ts",
     "day4": "bun run day4/index.ts",
-    "day5": "bun run day5/index.ts"
+    "day5": "bun run day5/index.ts",
+    "day6": "bun run day6/index.ts"
   },
   "devDependencies": {
     "@types/bun": "latest"
