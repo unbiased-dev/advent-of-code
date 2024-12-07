@@ -35,10 +35,8 @@ const part1 = () => {
             currentPermutationAsBitString[index - 1] === "0" ? "+" : "*";
           if (index === 0) {
             total = n;
-            if (target === 292) console.log(total);
             return total;
           }
-          if (target === 292) console.log(eval(`${total} ${operation} ${n}`));
           return eval(`${total} ${operation} ${n}`);
         }, 0);
         if (totalForThisPermutation === target) {
