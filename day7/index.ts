@@ -93,7 +93,13 @@ const part2 = () => {
           total = n;
           return total;
         }
-        return eval(`${total} ${operation} ${n}`);
+        if (operation === "+") {
+          return (total += n);
+        }
+        if (operation === "*") {
+          return (total *= n);
+        }
+        return total; // non reachable
       }, 0);
       if (totalForThisPermutation === target) {
         isSolvable = true;
@@ -138,11 +144,16 @@ const part2 = () => {
           total = n;
           return total;
         }
-        if (["+", "*"].includes(operationElem)) {
-          return eval(`${total} ${operationElem} ${n}`);
-        } else if (operationElem === "||") {
+        if (operationElem === "+") {
+          return (total += n);
+        }
+        if (operationElem === "*") {
+          return (total *= n);
+        }
+        if (operationElem === "||") {
           return parseInt(`${total}${n}`, 10);
         }
+        return total; // non reachable
       }, 0);
       if (totalForThisPermutation === target) {
         isSolvable = true;
